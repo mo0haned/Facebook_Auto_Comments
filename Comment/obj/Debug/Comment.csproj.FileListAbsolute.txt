@@ -23,3 +23,5 @@ C:\Users\mo0ha\source\repos\Comment\Comment\bin\Debug\WebDriver.Support.xml
 C:\Users\mo0ha\source\repos\Comment\Comment\obj\Debug\Comment.csproj.CopyComplete
 C:\Users\mo0ha\source\repos\Comment\Comment\obj\Debug\Comment.exe
 C:\Users\mo0ha\source\repos\Comment\Comment\obj\Debug\Comment.pdb
+C:\Users\mo0ha\source\repos\Comment\Comment\bin\Debug\FakeTextGenerator.dll
+C:\Users\mo0ha\source\repos\Comment\Comment\bin\Debug\FakeTextGenerator.pdb

@@ -23,3 +23,5 @@ C:\Users\mo0ha\source\repos\Comment\Comment\obj\Release\Comment.csproj.CoreCompi
 C:\Users\mo0ha\source\repos\Comment\Comment\obj\Release\Comment.csproj.CopyComplete
 C:\Users\mo0ha\source\repos\Comment\Comment\obj\Release\Comment.exe
 C:\Users\mo0ha\source\repos\Comment\Comment\obj\Release\Comment.pdb
+C:\Users\mo0ha\source\repos\Comment\Comment\bin\Release\FakeTextGenerator.dll
+C:\Users\mo0ha\source\repos\Comment\Comment\bin\Release\FakeTextGenerator.pdb

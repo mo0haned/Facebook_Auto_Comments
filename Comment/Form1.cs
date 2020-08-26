@@ -15,6 +15,8 @@ using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
 using System.Text.RegularExpressions;
 using OpenQA.Selenium.Support.Extensions;
+using ET.FakeText;
+using System.CodeDom;
 
 namespace Comment
 {
@@ -24,7 +26,7 @@ namespace Comment
         IWebDriver driver;
         IJavaScriptExecutor js;
         int done=0;
-
+        int next_wait = 50;
         public Form1()
         {
             InitializeComponent();
@@ -186,7 +188,7 @@ namespace Comment
                 }
                 catch (Exception)
                 {
-                    status_changer("Faild to start, update google chrome and open me again");
+                    status_changer("Check google-Chrome version");
                 }
             }
         }
@@ -329,10 +331,13 @@ namespace Comment
         private void textgenerator_DoWork(object sender, DoWorkEventArgs e)
         {
             string final_text = "";
-            for ( int i = 0; i < 300; i++)
+            TextGenerator wc = new TextGenerator(WordTypes.Name);
+            List<string> namesList = new List<string>(20);
+            for (int i = 0; i < 300; i++)
             {
-                final_text += RandomString(random.Next(3, 8))+" ";
+                namesList.Add(wc.GenerateWord(6));
             }
+            final_text = string.Join(" ", namesList);
             Comments.Invoke((MethodInvoker)delegate
             {
                 Comments.Text = final_text;
@@ -349,7 +354,34 @@ namespace Comment
                 "submit.click();";
             js.ExecuteScript(script);
             if (rand)
-                System.Threading.Thread.Sleep(random.Next(100,1000));
+            {
+                System.Threading.Thread.Sleep(random.Next(1000, 7000));
+                // random big wait every random time
+                if (done % next_wait == 0)
+                {
+                    next_wait = random.Next(50, 100);
+                    System.Threading.Thread.Sleep(random.Next(20000, 60000));
+                }
+            }
+            try
+            {
+                var na = driver.FindElement(By.Name("comment_text"));
+                if (na != null)
+                { }
+                else
+                {
+                    MessageBox.Show("Something wrong, Check it and start again");
+                    stop.PerformClick();
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Something wrong, Check it and start again");
+                stop.PerformClick();
+            }
+            
+           
             driver.Navigate().Refresh();
             done += 1;
         }
@@ -412,7 +444,14 @@ namespace Comment
                 for (int i = 0; i < nComments; i++)
                     try
                     {
-                        send_comment(ssize[random.Next(0, ssize.Length)], ran);
+                        string final = "";
+                        int rand_num = random.Next(1, 15); ;
+                        for (int ii = 0; ii < rand_num; ii++)
+                            if (ii == 0)
+                                final += ssize[random.Next(0, ssize.Length)] + " ";
+                            else
+                                final += ssize[random.Next(0, ssize.Length)] + " ".ToLower();
+                        send_comment(final, ran);
                         working.Invoke((MethodInvoker)delegate
                         {
                             working.ForeColor = Color.Green;
@@ -434,7 +473,14 @@ namespace Comment
                 while (true)
                     try
                     {
-                        send_comment(ssize[random.Next(0, ssize.Length)], ran);
+                        string final = ""; 
+                        int rand_num = random.Next(1, 15);
+                        for (int ii = 0; ii < rand_num; ii++)
+                            if ( ii ==0 )
+                                final += ssize[random.Next(0, ssize.Length)] + " ";
+                            else
+                                final += ssize[random.Next(0, ssize.Length)] + " ".ToLower();
+                        send_comment(final, ran);
                         working.Invoke((MethodInvoker)delegate
                         {
                             working.ForeColor = Color.Green;

@@ -353,18 +353,18 @@
             this.tip2.AutoSize = true;
             this.tip2.Location = new System.Drawing.Point(478, 47);
             this.tip2.Name = "tip2";
-            this.tip2.Size = new System.Drawing.Size(223, 19);
+            this.tip2.Size = new System.Drawing.Size(154, 19);
             this.tip2.TabIndex = 7;
-            this.tip2.Text = "separate every text with space";
+            this.tip2.Text = "the words in this box";
             // 
             // tip
             // 
             this.tip.AutoSize = true;
             this.tip.Location = new System.Drawing.Point(463, 28);
             this.tip.Name = "tip";
-            this.tip.Size = new System.Drawing.Size(294, 19);
+            this.tip.Size = new System.Drawing.Size(283, 19);
             this.tip.TabIndex = 6;
-            this.tip.Text = "** I will choose random text from this box";
+            this.tip.Text = "** It will make a random comment from ";
             // 
             // Comms
             // 
