@@ -27,6 +27,7 @@ namespace Comment
         IJavaScriptExecutor js;
         int done=0;
         int next_wait = 50;
+        bool wo = false;
         public Form1()
         {
             InitializeComponent();
@@ -83,9 +84,10 @@ namespace Comment
             //op.AddArgument("--headless");
             //---------------------------------------
             op.AddArgument("--disable-extensions"); // for faster process
-            op.AddArgument("--disable-gpu"); // for faster process
+            //op.AddArgument("--disable-gpu"); // for faster process
             //op.AddArgument("--remote-debugging-port=45447");
             // it's kind of important in headless mode but it's not working yet
+            op.AddExcludedArgument("enable-automation");// avoid  the automation bar 
             op.AddAdditionalCapability("useAutomationExtension", false); // avoid  the automation bar 
 
             // the next 3 lines is to hide the chrome driver CMD 
@@ -148,7 +150,24 @@ namespace Comment
             try
             {
                 Start_Browser();
-                status_changer("i'm running fine after 1");
+                status_changer("testing login (4/4)");
+                System.Threading.Thread.Sleep(1000);
+                try
+                {
+                    bool login = Check_login();
+                    if (login)
+                    {
+                        js = (IJavaScriptExecutor)driver;
+                        home_deawer();
+                    }
+                    else
+                        status_changer("You are not logedin");
+                }
+                catch (Exception)
+                {
+
+                    status_changer("bad connection");
+                }
             }
             catch (Exception)
             {
@@ -219,7 +238,6 @@ namespace Comment
 
         private void label1_Click(object sender, EventArgs e)
         {
-
         }
 
         private void TestPost_Click(object sender, EventArgs e)
@@ -299,17 +317,14 @@ namespace Comment
                     });
             }
         }
-
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }
-
         private void share_CheckedChanged(object sender, EventArgs e)
         {
             NoShares.Enabled = !NoShares.Enabled;
         }
-
         private void Generate_Click(object sender, EventArgs e)
         {
             if (textgenerator.IsBusy != true)
@@ -343,7 +358,6 @@ namespace Comment
                 Comments.Text = final_text;
             });
         }
-        
         private void send_comment(string text,bool rand)
         {
             
@@ -365,20 +379,14 @@ namespace Comment
             }
             try
             {
-                var na = driver.FindElement(By.Name("comment_text"));
-                if (na != null)
-                { }
-                else
-                {
-                    MessageBox.Show("Something wrong, Check it and start again");
-                    stop.PerformClick();
-                }
+                var na = driver.FindElement(By.Id("captcha"));
+                    MessageBox.Show(na.Text);
+                    System.Threading.Thread.Sleep(random.Next(60000));
+                    driver.Navigate().GoToUrl(Post.Text);
             }
             catch (Exception)
             {
-
-                MessageBox.Show("Something wrong, Check it and start again");
-                stop.PerformClick();
+                
             }
             
            
@@ -406,6 +414,7 @@ namespace Comment
 
         private void start_Click(object sender, EventArgs e)
         {
+            wo = true;
             working.Text = "Starting ...";
             working.Visible = true;
             start.Enabled = false;
@@ -439,7 +448,7 @@ namespace Comment
                 nShare = int.Parse(NoShares.Text);
             else
                 nShare = 0;
-            if (nComments>0)
+            if (nComments > 0)
             {
                 for (int i = 0; i < nComments; i++)
                     try
@@ -450,7 +459,7 @@ namespace Comment
                             if (ii == 0)
                                 final += ssize[random.Next(0, ssize.Length)] + " ";
                             else
-                                final += ssize[random.Next(0, ssize.Length)] + " ".ToLower();
+                                final += (ssize[random.Next(0, ssize.Length)] + " ").ToLower();
                         send_comment(final, ran);
                         working.Invoke((MethodInvoker)delegate
                         {
@@ -466,25 +475,31 @@ namespace Comment
                             working.Text = "Connection error , i will try again in 5 sec.";
                         });
                         System.Threading.Thread.Sleep(5000);
+                        driver.Navigate().GoToUrl(Post.Text);
                     }
-                    
+
             }
-            else 
+            else
                 while (true)
+                {
                     try
                     {
-                        string final = ""; 
+                        if (!wo)
+                        {
+                            break;
+                        }
+                        string final = "";
                         int rand_num = random.Next(1, 15);
                         for (int ii = 0; ii < rand_num; ii++)
-                            if ( ii ==0 )
+                            if (ii == 0)
                                 final += ssize[random.Next(0, ssize.Length)] + " ";
                             else
-                                final += ssize[random.Next(0, ssize.Length)] + " ".ToLower();
+                                final += (ssize[random.Next(0, ssize.Length)] + " ").ToLower();
                         send_comment(final, ran);
                         working.Invoke((MethodInvoker)delegate
                         {
                             working.ForeColor = Color.Green;
-                            working.Text = "Done : "+done;
+                            working.Text = "Done : " + done;
                         });
                     }
                     catch (Exception)
@@ -497,6 +512,7 @@ namespace Comment
                         });
                         System.Threading.Thread.Sleep(5000);
                     }
+                }
 
             start.Invoke((MethodInvoker)delegate
             {
@@ -510,6 +526,7 @@ namespace Comment
 
         private void stop_Click(object sender, EventArgs e)
         {
+            wo = false;
             Commenter.CancelAsync();
             stop.Enabled = false;
             start.Enabled = true;

@@ -214,9 +214,9 @@
             // working
             // 
             this.working.ForeColor = System.Drawing.Color.Green;
-            this.working.Location = new System.Drawing.Point(288, 342);
+            this.working.Location = new System.Drawing.Point(308, 342);
             this.working.Name = "working";
-            this.working.Size = new System.Drawing.Size(469, 19);
+            this.working.Size = new System.Drawing.Size(449, 19);
             this.working.TabIndex = 20;
             this.working.Text = "Check the url and connection";
             this.working.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
